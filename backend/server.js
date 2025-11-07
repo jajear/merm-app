@@ -52,6 +52,15 @@ app.post('/api/items', async (req, res) => {
   }
 });
 
+app.put('/api/items/:id', async (req, res) => {
+  try {
+    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedItem);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 app.delete('/api/items/:id', async (req, res) => {
   try {
     await Item.findByIdAndDelete(req.params.id);
