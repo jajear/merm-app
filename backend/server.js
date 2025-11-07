@@ -52,6 +52,21 @@ app.post('/api/items', async (req, res) => {
   }
 });
 
+add.put('/api/items/:id', (req, res) => {
+  try {
+    const idx = items.findIndex(i => i._id === req.params.id);
+    if (idx === -1) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+    const { name, description } = req.body;
+    if (name !== undefined) items[idx].name = name;
+    if (description !== undefined) items[idx].description = description;
+    res.json(items[idx]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.delete('/api/items/:id', async (req, res) => {
   try {
     await Item.findByIdAndDelete(req.params.id);
